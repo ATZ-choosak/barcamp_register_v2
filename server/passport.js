@@ -2,8 +2,6 @@ require('dotenv').config()
 
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
-const Participant = require("./models/participant");
-const Console = require("./models/console")
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -15,39 +13,19 @@ passport.use(
             clientSecret: GOOGLE_CLIENT_SECRET,
             callbackURL: "/auth/google/callback",
         },
-        async function (accessToken, refreshToken, data, done) {
+        async function (accessToken, refreshToken, profile, done) {
 
-            let email = data.emails[0].value
-
-            Participant.findOne({ email }).then(async (currentUser) => {
-
-                let console_lst = await Console.findOne({ name: "control" })
-
-                if (currentUser) {
-                    done(null, { user: currentUser, editable: console_lst.editable });
-                } else {
-                    Participant.create({ email }).then(newUser => {
-                        done(null, { user: newUser, editable: console_lst.editable });
-                    })
-                }
-
-            })
+            done(null, profile)
         }
     )
 );
 
-passport.serializeUser((user, done) => {
+passport.serializeUser((data, done) => {
 
-    done(null, user.user.email);
+    done(null, data)
 });
 
-passport.deserializeUser((email, done) => {
+passport.deserializeUser((data, done) => {
 
-    Participant.findOne({ email }).then(async (currentUser) => {
-
-        let console_lst = await Console.findOne({ name: "control" })
-
-        done(null, { user: currentUser, editable: console_lst.editable });
-
-    })
+    done(null, data)
 });

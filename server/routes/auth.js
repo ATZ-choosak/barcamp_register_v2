@@ -2,16 +2,52 @@ require("dotenv").config();
 
 const router = require("express").Router();
 const passport = require("passport");
+const Participant = require("../models/participant");
+const Console = require("../models/console")
 
 
 const CLIENT_URL = process.env.ORIGIN_URL;
 
 router.get("/login/success", (req, res) => {
     if (req.user) {
+
+        let email = req.user.emails[0].value
+
+        Participant.findOne({ email }).then(async (currentUser) => {
+
+            let console_lst = await Console.findOne({ name: "control" })
+
+            if (currentUser) {
+
+                res.status(200).json({
+                    error: false,
+                    message: "successfull",
+                    infomation: req.user,
+                    user: currentUser,
+                    editable: console_lst.editable
+                    //   cookies: req.cookies
+                });
+            } else {
+                Participant.create({ email }).then(newUser => {
+
+                    res.status(200).json({
+                        error: false,
+                        message: "successfull",
+                        infomation: req.user,
+                        user: newUser,
+                        editable: console_lst.editable
+                        //   cookies: req.cookies
+                    });
+                })
+            }
+
+        })
+
+
+    } else {
         res.status(200).json({
-            success: true,
-            message: "successfull",
-            user: req.user,
+            error: false,
+            message: "No session.",
             //   cookies: req.cookies
         });
     }

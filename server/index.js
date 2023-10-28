@@ -3,10 +3,14 @@ const express = require("express");
 const cors = require("cors");
 const passportSetup = require("./passport");
 const passport = require("passport");
-const authRoute = require("./routes/auth");
 const mongoose = require('mongoose')
 const app = express();
 require("dotenv").config();
+
+//Routes
+const authRoute = require("./routes/auth");
+const participantRoute = require('./routes/participantRoute')
+
 
 mongoose.connect(process.env.DATABASE_URL).then(() => console.log("connected to Database."))
 
@@ -20,6 +24,7 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.json())
 
 app.use(
   cors({
@@ -30,6 +35,7 @@ app.use(
 );
 
 app.use("/auth", authRoute);
+app.use("/api", participantRoute)
 
 app.listen(8080, () => {
   console.log("Server is running!");
