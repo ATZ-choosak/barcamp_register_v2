@@ -5,6 +5,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import FormPage from "./Pages/FormPage.jsx";
 import getUser from "./loader/getUser.js";
+import getConsole from "./loader/getConsole.js";
 
 const router = createBrowserRouter([
   {
@@ -12,11 +13,12 @@ const router = createBrowserRouter([
     element: <App />,
     loader: async () => {
       let user = await getUser();
+      let Console = await getConsole();
       if (user.infomation) {
         window.open("/form", "_self");
       }
 
-      return user;
+      return Console;
     },
   },
   {

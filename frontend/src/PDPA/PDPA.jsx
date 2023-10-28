@@ -16,7 +16,7 @@ function PDPA({ confirm, close }) {
   ]);
 
   return (
-    <div className="bg-black bg-opacity-70 fixed left-0 w-full h-screen p-5">
+    <div className="bg-black bg-opacity-70 fixed left-0 w-full h-screen p-5 z-10">
       <motion.div
         className="w-full h-full"
         initial={{ opacity: 0, scale: 0 }}

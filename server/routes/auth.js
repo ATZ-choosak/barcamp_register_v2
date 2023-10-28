@@ -16,6 +16,8 @@ router.get("/login/success", (req, res) => {
         Participant.findOne({ email }).then(async (currentUser) => {
 
             let console_lst = await Console.findOne({ name: "control" })
+            let editable = new Date(console_lst.end_register).getTime() - new Date().getTime() > 0
+            
 
             if (currentUser) {
 
@@ -24,7 +26,7 @@ router.get("/login/success", (req, res) => {
                     message: "successfull",
                     infomation: req.user,
                     user: currentUser,
-                    editable: console_lst.editable
+                    editable
                     //   cookies: req.cookies
                 });
             } else {
@@ -35,7 +37,7 @@ router.get("/login/success", (req, res) => {
                         message: "successfull",
                         infomation: req.user,
                         user: newUser,
-                        editable: console_lst.editable
+                        editable
                         //   cookies: req.cookies
                     });
                 })

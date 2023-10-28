@@ -2,9 +2,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const ConsoleSchema = new Schema({
-    editable: {
-        type: Boolean,
-        default: false
+    start_register: {
+        type: Date,
+    },
+    end_register: {
+        type: Date,
     },
     name: {
         type: String,

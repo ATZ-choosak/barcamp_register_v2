@@ -9,7 +9,9 @@ module.exports = (req, res) => {
         if (update_user) {
 
             let console_lst = await Console.findOne({ name: "control" })
-            if (console_lst.editable) {
+            let editable = new Date(console_lst.end_register).getTime() - new Date().getTime() > 0
+
+            if (editable) {
 
                 if (update_user.pdpa) {
 
@@ -32,7 +34,7 @@ module.exports = (req, res) => {
                         })
                     } else {
                         res.status(200).send({
-                            error: false,
+                            error: true,
                             message: "PDPA not confirm."
                         })
                     }

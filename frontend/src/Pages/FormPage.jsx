@@ -22,7 +22,7 @@ const Schema = Yup.object().shape({
 
 function FormPage() {
   const userload = useLoaderData();
-  const [pdpa, setPdpa] = useState(userload.user.pdpa);
+  const [pdpa, setPdpa] = useState(userload.user.pdpa || !userload.editable);
   const [pdpaPopUp, setPdpaPopUp] = useState(true);
 
   const pdpaConfirm = async () => {
@@ -31,7 +31,8 @@ function FormPage() {
       pdpa: true,
     };
     let res = await saveForm(pdpa_data);
-    if (res.message === "Update PDPA Complete.") {
+    console.log(res);
+    if (!res.error) {
       setPdpaPopUp(false);
     }
   };
@@ -107,7 +108,7 @@ function FormPage() {
     let res = await saveForm(new_data);
 
     //PDPA
-    if (res.message === "PDPA not confirm.") {
+    if (res.error) {
       setPdpaPopUp(true);
       return;
     }
@@ -136,7 +137,11 @@ function FormPage() {
                 return (
                   <div key={i}>
                     <p>{data.label}</p>
-                    <Field className="p-2 bg-gray-100" name={data.name} />
+                    <Field
+                      disabled={!userload.editable}
+                      className="p-2 bg-gray-100"
+                      name={data.name}
+                    />
                     {errors[data.name] && touched[data.name] ? (
                       <p>{errors[data.name]}</p>
                     ) : null}
@@ -149,6 +154,7 @@ function FormPage() {
                   <div key={i}>
                     <p>{data.label}</p>
                     <Field
+                      disabled={!userload.editable}
                       className="p-2 bg-gray-100"
                       name={data.name}
                       type="checkbox"
@@ -162,6 +168,7 @@ function FormPage() {
                   <div key={i}>
                     <p>{data.label}</p>
                     <Field
+                      disabled={!userload.editable}
                       className="p-2 bg-gray-100"
                       name={data.name}
                       as="select"
@@ -176,9 +183,11 @@ function FormPage() {
                 );
               }
             })}
-            <button className="text-white bg-blue-500 px-4 p-2" type="submit">
-              Save
-            </button>
+            {userload.editable ? (
+              <button className="text-white bg-blue-500 px-4 p-2" type="submit">
+                Save
+              </button>
+            ) : null}
           </Form>
         )}
       </Formik>

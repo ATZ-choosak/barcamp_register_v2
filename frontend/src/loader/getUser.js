@@ -18,7 +18,7 @@ const getUser = async () => {
 
     } catch (error) {
 
-        return {}
+        return {error}
 
     }
 

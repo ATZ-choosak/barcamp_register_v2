@@ -10,6 +10,7 @@ require("dotenv").config();
 //Routes
 const authRoute = require("./routes/auth");
 const participantRoute = require('./routes/participantRoute')
+const getConsoleRoute = require('./routes/getConsole')
 
 
 mongoose.connect(process.env.DATABASE_URL).then(() => console.log("connected to Database."))
@@ -36,6 +37,7 @@ app.use(
 
 app.use("/auth", authRoute);
 app.use("/api", participantRoute)
+app.use("/api", getConsoleRoute)
 
 app.listen(8080, () => {
   console.log("Server is running!");
