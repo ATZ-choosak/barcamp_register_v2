@@ -4,6 +4,7 @@ import { Logout, saveForm } from "../AuthFunctions/authFunctions";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import PDPA from "../PDPA/PDPA";
+import { useNavigate } from 'react-router-dom'
 
 const Schema = Yup.object().shape({
   firstName: Yup.string().required("กรุณากรอกชื่อ"),
@@ -17,6 +18,7 @@ const Schema = Yup.object().shape({
   address: Yup.string().required("กรุณากรอกที่อยู่"),
   size: Yup.string().required("กรุณาเลือกไซต์เสื้อ"),
   organization: Yup.string().required("กรุณากรอกชื่อองค์กร หรือ หน่วยงาน"),
+  speakingTopic: Yup.string().required("กรุณากรอกหัวข้อที่จะนำเสนอ"),
   allergic: Yup.string().required("กรุณากรอกอาหารที่แพ้ หากไม่มีให้ใส่ - "),
 });
 
@@ -24,6 +26,7 @@ function FormPage() {
   const userload = useLoaderData();
   const [pdpa, setPdpa] = useState(userload.user.pdpa || !userload.editable);
   const [pdpaPopUp, setPdpaPopUp] = useState(true);
+  const navigate = useNavigate()
 
   const pdpaConfirm = async () => {
     let pdpa_data = {
@@ -49,6 +52,7 @@ function FormPage() {
     address: userload.user.address,
     size: userload.user.size,
     organization: userload.user.organization,
+    speakingTopic: userload.user.speakingTopic,
     isHalal: userload.user.isHalal,
     allergic: userload.user.allergic,
   });
@@ -91,8 +95,13 @@ function FormPage() {
       type: "input",
     },
     {
+      name: "speakingTopic",
+      label: "หัวข้อที่จะนำเสนอ",
+      type: "input"
+    },
+    {
       name: "isHalal",
-      label: "ฮาลาส",
+      label: "ฮาลาล",
       type: "checkbox",
     },
     {
@@ -113,7 +122,7 @@ function FormPage() {
       return;
     }
 
-    console.log(res);
+    navigate("/profile")
   };
 
   return (

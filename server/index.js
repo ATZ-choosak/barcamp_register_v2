@@ -3,17 +3,19 @@ const express = require("express");
 const cors = require("cors");
 const passportSetup = require("./passport");
 const passport = require("passport");
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 const app = express();
 require("dotenv").config();
+const parser = require("body-parser");
 
 //Routes
 const authRoute = require("./routes/auth");
-const participantRoute = require('./routes/participantRoute')
-const getConsoleRoute = require('./routes/getConsole')
+const participantRoute = require("./routes/participantRoute");
+const getConsoleRoute = require("./routes/getConsole");
 
-
-mongoose.connect(process.env.DATABASE_URL).then(() => console.log("connected to Database."))
+mongoose
+  .connect(process.env.DATABASE_URL)
+  .then(() => console.log("connected to Database."));
 
 app.use(
   cookieSession({
@@ -25,7 +27,8 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.json())
+app.use(express.json());
+app.use(express.static(__dirname))
 
 app.use(
   cors({
@@ -36,9 +39,9 @@ app.use(
 );
 
 app.use("/auth", authRoute);
-app.use("/api", participantRoute)
-app.use("/api", getConsoleRoute)
+app.use("/api", participantRoute);
+app.use("/api", getConsoleRoute);
 
-app.listen(8080, () => {
+app.listen(process.env.PORT, () => {
   console.log("Server is running!");
 });

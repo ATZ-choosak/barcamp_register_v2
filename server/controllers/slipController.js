@@ -1,10 +1,12 @@
 const Paticipant = require("../models/participant");
 const getEditable = require("./getEditable");
+require("dotenv").config();
 
 module.exports = (req, res) => {
-  let email = req.body.email;
+  let id = req.body.id;
+  let slip = req.file;
 
-  Paticipant.findOne({ email: email })
+  Paticipant.findById(id)
     .then(async (update_user) => {
       //old user
       if (update_user) {
@@ -14,12 +16,13 @@ module.exports = (req, res) => {
         if (editable) {
           //confirm pdpa
           if (update_user.pdpa) {
-            await update_user.updateOne(req.body);
+            update_user.slip = slip.path;
+            update_user.save();
 
             res.status(200).send({
               error: false,
-              data: req.body,
-              message: "Paticipant edited successfully.",
+              slip: slip.path,
+              message: "Slip uploaded successfully.",
             });
             //not confirm pdpa
           } else {
@@ -48,6 +51,7 @@ module.exports = (req, res) => {
       } else {
         res.status(200).send({
           error: true,
+          test: req.body,
           message: "No User in database or no request body data.",
         });
       }

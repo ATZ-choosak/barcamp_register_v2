@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import FormPage from "./Pages/FormPage.jsx";
 import getUser from "./loader/getUser.js";
 import getConsole from "./loader/getConsole.js";
+import Profile from "./Pages/Profile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -14,8 +15,15 @@ const router = createBrowserRouter([
     loader: async () => {
       let user = await getUser();
       let Console = await getConsole();
+
+      console.log(user)
+
       if (user.infomation) {
-        window.open("/form", "_self");
+        if (user.user.firstName) {
+          window.open("/profile", "_self");
+        } else {
+          window.open("/form", "_self");
+        }
       }
 
       return Console;
@@ -28,6 +36,22 @@ const router = createBrowserRouter([
       let user = await getUser();
       if (!user.infomation) {
         window.open("/", "_self");
+      }
+
+      return user;
+    },
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
+    loader: async () => {
+      let user = await getUser();
+      if (!user.infomation) {
+        window.open("/", "_self");
+      }
+
+      if (!user.user.firstName) {
+        window.open("/form", "_self");
       }
 
       return user;
