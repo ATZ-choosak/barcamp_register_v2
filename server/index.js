@@ -14,7 +14,7 @@ const participantRoute = require("./routes/participantRoute");
 const getConsoleRoute = require("./routes/getConsole");
 
 mongoose
-  .connect(process.env.DATABASE_URL)
+  .connect(`${process.env.DATABASE_URL}/${process.env.DATABASE_NAME}`)
   .then(() => console.log("connected to Database."));
 
 app.use(
@@ -32,7 +32,7 @@ app.use(express.static(__dirname))
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "*",
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })

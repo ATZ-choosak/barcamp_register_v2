@@ -4,7 +4,7 @@ const getConsole = async () => {
 
     try {
 
-        let Console = await fetch(`${config.apiPrefix}/api/console`, {
+        let Console = await fetch(`${config.apiPrefix}/console`, {
             method: "GET",
             headers: {
                 Accept: "application/json",

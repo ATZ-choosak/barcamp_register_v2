@@ -1,7 +1,7 @@
-FROM node
+FROM node:alpine
 
-WORKDIR /api
-COPY package.json .
-RUN npm install
+WORKDIR /usr/src/app
+COPY package*.json .
+RUN npm ci
 COPY . .
-CMD [ "node" , "index.js" ]
+CMD [ "npm" , "start" ]

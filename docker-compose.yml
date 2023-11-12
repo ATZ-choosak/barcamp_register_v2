@@ -1,26 +1,54 @@
-version: '3.8'
+version: '3'
 
 services:
   mongo_db:
+    container_name: db_container
     image: mongo
     restart: always
-    ports:
-      - 27017:27017
-  api:
-    build: ./server
-    ports:
-      - 8080:8080
     volumes:
-      - uploads:/uploads
+      - mongo_db:/data/db
+    ports:
+      - 2717:27017
+    networks:
+      - barcamp8
+  api:
+    container_name: api_container
+    build:
+      context: ./server
+      dockerfile: ./Dockerfile
+    ports:
+      - 127.0.0.1:8080:8080
     environment:
-      - DATABASE_URL=mongodb://mongo_db:27017/barcamp8
-      - ORIGIN_URL=http://ec2-54-169-232-140.ap-southeast-1.compute.amazonaws.com
+      - DATABASE_URL=mongodb://mongo_db:27017
+      - ORIGIN_URL=/
+      - DATABASE_NAME=barcamp8
       - GOOGLE_CLIENT_ID=1088133578350-0r8gk08t0j2vi15290d8eiv87kt16qn0.apps.googleusercontent.com
       - GOOGLE_CLIENT_SECRET=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
       - PORT=8080
+    volumes:
+      - api:/usr/src/app
     depends_on:
       - mongo_db
     restart: always
+    networks:
+      - barcamp8
+  app:
+    container_name: app_container
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - 80:80
+    environment:
+      - NODE_ENV=production
+    restart: always
+    networks:
+      - barcamp8
 
 volumes:
-  uploads:
+  mongo_db:
+  api:
+
+
+networks:
+  barcamp8:

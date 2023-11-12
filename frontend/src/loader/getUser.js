@@ -4,7 +4,7 @@ const getUser = async () => {
 
     try {
 
-        let user = await fetch(`${config.apiPrefix}/auth/login/success`, {
+        let user = await fetch(`${config.apiPrefixAuth}/login/success`, {
             method: "GET",
             credentials: "include",
             headers: {

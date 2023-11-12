@@ -1,16 +1,16 @@
 import config from "../../config";
 
 const Login = () => {
-  window.open(`${config.apiPrefix}/auth/google`, "_self");
+  window.open(`${config.apiPrefixAuth}/google`, "_self");
 };
 
 const Logout = () => {
-  window.open(`${config.apiPrefix}/auth/logout`, "_self");
+  window.open(`${config.apiPrefixAuth}/logout`, "_self");
 };
 
 const saveForm = async (data) => {
   try {
-    let res = await fetch(`${config.apiPrefix}/api/register`, {
+    let res = await fetch(`${config.apiPrefix}/register`, {
       method: "PUT",
       credentials: "include",
       headers: {
@@ -29,7 +29,7 @@ const saveForm = async (data) => {
 
 const uploadSlip = async (data) => {
   try {
-    let res = await fetch(`${config.apiPrefix}/api/slip`, {
+    let res = await fetch(`${config.apiPrefix}/slip`, {
       method: "POST",
       credentials: "include",
       headers: {
