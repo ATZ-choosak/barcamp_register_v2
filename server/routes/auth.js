@@ -6,7 +6,7 @@ const Participant = require("../models/participant");
 const Console = require("../models/console")
 
 
-const CLIENT_URL = process.env.ORIGIN_URL;
+const CLIENT_URL = process.env.PRODUCTION ? process.env.ORIGIN_URL : "http://localhost:3000";
 
 router.get("/login/success", (req, res) => {
     if (req.user) {

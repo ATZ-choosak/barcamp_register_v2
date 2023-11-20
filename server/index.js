@@ -32,7 +32,7 @@ app.use(express.static(__dirname))
 
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.PRODUCTION ? "*" : "http://localhost:3000",
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
