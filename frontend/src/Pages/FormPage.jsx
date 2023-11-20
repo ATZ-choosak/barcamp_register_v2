@@ -4,7 +4,7 @@ import { Logout, saveForm } from "../AuthFunctions/authFunctions";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import PDPA from "../PDPA/PDPA";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 const Schema = Yup.object().shape({
   firstName: Yup.string().required("กรุณากรอกชื่อ"),
@@ -26,7 +26,7 @@ function FormPage() {
   const userload = useLoaderData();
   const [pdpa, setPdpa] = useState(userload.user.pdpa || !userload.editable);
   const [pdpaPopUp, setPdpaPopUp] = useState(true);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const pdpaConfirm = async () => {
     let pdpa_data = {
@@ -97,7 +97,7 @@ function FormPage() {
     {
       name: "speakingTopic",
       label: "หัวข้อที่จะนำเสนอ",
-      type: "input"
+      type: "input",
     },
     {
       name: "isHalal",
@@ -122,7 +122,7 @@ function FormPage() {
       return;
     }
 
-    navigate("/profile")
+    navigate("/profile");
   };
 
   return (
@@ -147,7 +147,12 @@ function FormPage() {
                   <div key={i}>
                     <p>{data.label}</p>
                     <Field
-                      disabled={!userload.editable}
+                      disabled={
+                        !(
+                          userload.editable &&
+                          userload.user.status === "PENDING"
+                        )
+                      }
                       className="p-2 bg-gray-100"
                       name={data.name}
                     />
@@ -163,7 +168,12 @@ function FormPage() {
                   <div key={i}>
                     <p>{data.label}</p>
                     <Field
-                      disabled={!userload.editable}
+                      disabled={
+                        !(
+                          userload.editable &&
+                          userload.user.status === "PENDING"
+                        )
+                      }
                       className="p-2 bg-gray-100"
                       name={data.name}
                       type="checkbox"
@@ -177,7 +187,12 @@ function FormPage() {
                   <div key={i}>
                     <p>{data.label}</p>
                     <Field
-                      disabled={!userload.editable}
+                      disabled={
+                        !(
+                          userload.editable &&
+                          userload.user.status === "PENDING"
+                        )
+                      }
                       className="p-2 bg-gray-100"
                       name={data.name}
                       as="select"
@@ -192,7 +207,7 @@ function FormPage() {
                 );
               }
             })}
-            {userload.editable ? (
+            {userload.editable && userload.user.status === "PENDING" ? (
               <button className="text-white bg-blue-500 px-4 p-2" type="submit">
                 Save
               </button>

@@ -23,12 +23,12 @@ function Confirmed({ user }) {
         <QRCode
           value={user._id}
           bgColor="#ffc16a"
-          fgColor="#fff"
+          fgColor="#000"
           size={350}
           logoImage="logo.png"
           logoHeight={340}
           logoWidth={340}
-          logoOpacity={0.15}
+          logoOpacity={0.3}
           enableCORS={true}
           qrStyle="dots"
           eyeRadius={10}

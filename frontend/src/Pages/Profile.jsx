@@ -9,7 +9,7 @@ import Pending from "../Components/Pending";
 function Profile() {
   const userload = useLoaderData();
   const navigate = useNavigate();
-  
+
   const backToForm = () => {
     navigate("/form");
   };
@@ -29,7 +29,7 @@ function Profile() {
         <Pending />
       )}
 
-      {userload.editable ? (
+      {userload.editable && userload.user.status === "PENDING" ? (
         <button
           onClick={backToForm}
           className="text-white bg-blue-500 p-2 rounded-lg"
