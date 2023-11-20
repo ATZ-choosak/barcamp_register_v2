@@ -22,7 +22,7 @@ function Profile() {
       {userload.user.status === "QUALIFIED" ? (
         <Qualified user={userload.user} />
       ) : userload.user.status === "CONFIRMED" ? (
-        <Confirmed />
+        <Confirmed user={userload.user} />
       ) : userload.user.status === "NOT_QUALIFIED" ? (
         <NotQualified />
       ) : (
