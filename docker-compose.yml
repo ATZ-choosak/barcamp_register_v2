@@ -4,6 +4,9 @@ services:
   mongo_db:
     container_name: db_container
     image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=barcamp8
+      - MONGO_INITDB_ROOT_PASSWORD=barcamp8@pupa
     restart: always
     volumes:
       - mongo_db:/data/db
@@ -29,18 +32,6 @@ services:
       - api:/usr/src/app
     depends_on:
       - mongo_db
-    restart: always
-    networks:
-      - barcamp8
-  app:
-    container_name: app_container
-    build:
-      context: ./frontend
-      dockerfile: ./Dockerfile
-    ports:
-      - 80:80
-    environment:
-      - NODE_ENV=production
     restart: always
     networks:
       - barcamp8

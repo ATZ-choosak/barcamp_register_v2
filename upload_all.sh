@@ -11,9 +11,7 @@ yarn build
 ssh ${USER}@${TARGET} "rm -rf ${FRONTEND_PATH}/*"
 echo "Upload frontend"
 scp -r dist/* ${USER}@${TARGET}:${FRONTEND_PATH}/
-scp -r Dockerfile ${USER}@${TARGET}:${FRONTEND_PATH}/
 scp -r conf.d ${USER}@${TARGET}:${FRONTEND_PATH}/
-scp -r .dockerignore ${USER}@${TARGET}:${FRONTEND_PATH}/
 
 cd ..
 mkdir server_init
