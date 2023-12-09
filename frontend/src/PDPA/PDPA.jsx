@@ -16,7 +16,7 @@ function PDPA({ confirm, close }) {
   ]);
 
   return (
-    <div className="bg-black bg-opacity-70 fixed left-0 w-full h-screen p-5 z-10">
+    <div className="bg-black bg-opacity-70 fixed top-0 left-0 w-full h-screen p-5 py-20 z-10">
       <motion.div
         className="w-full h-full"
         initial={{ opacity: 0, scale: 0 }}
@@ -25,7 +25,7 @@ function PDPA({ confirm, close }) {
       >
         <div className=" max-w-lg h-full mx-auto bg-white relative rounded-lg overflow-hidden">
           <div className="overflow-y-scroll h-full absolute left-0 top-0">
-            <p className="p-4 shadow-md">ยินยอมให้ใช้ข้อมูลส่วนบุคคล</p>
+            <p className="p-4 shadow-md text-white bg-primary-500">ยินยอมให้ใช้ข้อมูลส่วนบุคคล</p>
             <div className="px-8 py-4">
               <p className="font-bold">นิยามข้อมูลส่วนบุคคล</p>
               <p>

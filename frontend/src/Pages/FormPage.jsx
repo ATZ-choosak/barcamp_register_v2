@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
-import { Logout, saveForm } from "../AuthFunctions/authFunctions";
+import { saveForm } from "../AuthFunctions/authFunctions";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import PDPA from "../PDPA/PDPA";
 import { useNavigate } from "react-router-dom";
+import AppBar from "../Components/AppBar";
+import Swal from "sweetalert2";
 
 const Schema = Yup.object().shape({
   firstName: Yup.string().required("กรุณากรอกชื่อ"),
@@ -101,7 +103,7 @@ function FormPage() {
     },
     {
       name: "isHalal",
-      label: "ฮาลาล",
+      label: "อาหารฮาลาล",
       type: "checkbox",
     },
     {
@@ -122,101 +124,116 @@ function FormPage() {
       return;
     }
 
-    navigate("/profile");
+    Swal.fire({
+      title: "แจ้งเตือน",
+      text: " บันทึกข้อมูลสำเร็จ",
+      icon: "success",
+      confirmButtonText: "รับทราบ",
+      confirmButtonColor: "#FF8C00"
+    }).then(() => navigate("/profile"));
   };
 
   return (
-    <div className="container mx-auto">
-      {!pdpa && pdpaPopUp ? (
-        <PDPA confirm={pdpaConfirm} close={closePDPA} />
-      ) : (
-        ""
-      )}
-      <Formik
-        validationSchema={Schema}
-        initialValues={initValue}
-        onSubmit={(values) => {
-          onSubmitFrom(values);
-        }}
-      >
-        {({ errors, touched }) => (
-          <Form>
-            {formList.map((data, i) => {
-              if (data.type === "input") {
-                return (
-                  <div key={i}>
-                    <p>{data.label}</p>
-                    <Field
-                      disabled={
-                        !(
-                          userload.editable &&
-                          userload.user.status === "PENDING"
-                        )
-                      }
-                      className="p-2 bg-gray-100"
-                      name={data.name}
-                    />
-                    {errors[data.name] && touched[data.name] ? (
-                      <p>{errors[data.name]}</p>
-                    ) : null}
-                  </div>
-                );
-              }
-
-              if (data.type === "checkbox") {
-                return (
-                  <div key={i}>
-                    <p>{data.label}</p>
-                    <Field
-                      disabled={
-                        !(
-                          userload.editable &&
-                          userload.user.status === "PENDING"
-                        )
-                      }
-                      className="p-2 bg-gray-100"
-                      name={data.name}
-                      type="checkbox"
-                    />
-                  </div>
-                );
-              }
-
-              if (data.type === "option") {
-                return (
-                  <div key={i}>
-                    <p>{data.label}</p>
-                    <Field
-                      disabled={
-                        !(
-                          userload.editable &&
-                          userload.user.status === "PENDING"
-                        )
-                      }
-                      className="p-2 bg-gray-100"
-                      name={data.name}
-                      as="select"
-                    >
-                      {data.options.map((option, i) => (
-                        <option value={option} key={i}>
-                          {option}
-                        </option>
-                      ))}
-                    </Field>
-                  </div>
-                );
-              }
-            })}
-            {userload.editable && userload.user.status === "PENDING" ? (
-              <button className="text-white bg-blue-500 px-4 p-2" type="submit">
-                Save
-              </button>
-            ) : null}
-          </Form>
+    <React.Fragment>
+      <AppBar />
+      <div className="container mx-auto max-w-xl">
+        {!pdpa && pdpaPopUp ? (
+          <PDPA confirm={pdpaConfirm} close={closePDPA} />
+        ) : (
+          ""
         )}
-      </Formik>
-      <button onClick={Logout}>Logout</button>
-    </div>
+        <Formik
+          validationSchema={Schema}
+          initialValues={initValue}
+          onSubmit={(values) => {
+            onSubmitFrom(values);
+          }}
+        >
+          {({ errors, touched }) => (
+            <Form className="p-4 w-full mx-auto flex flex-col space-y-3 shadow-md pt-24 pb-14">
+              {formList.map((data, i) => {
+                if (data.type === "input") {
+                  return (
+                    <div key={i}>
+                      <p className="mb-4">{data.label}</p>
+                      <Field
+                        disabled={
+                          !(
+                            userload.editable &&
+                            userload.user.status === "PENDING"
+                          )
+                        }
+                        className="p-2 bg-gray-100 w-full rounded-lg outline-none"
+                        name={data.name}
+                        placeholder={"กรุณากรอก " + data.label}
+                      />
+                      {errors[data.name] && touched[data.name] ? (
+                        <p className="text-red-500 text-sm mt-2">
+                          {errors[data.name]}
+                        </p>
+                      ) : null}
+                    </div>
+                  );
+                }
+
+                if (data.type === "checkbox") {
+                  return (
+                    <div key={i} className="flex items-center space-x-4">
+                      <Field
+                        id={data.label}
+                        disabled={
+                          !(
+                            userload.editable &&
+                            userload.user.status === "PENDING"
+                          )
+                        }
+                        className="p-2 w-4 h-4"
+                        name={data.name}
+                        type="checkbox"
+                      />
+                      <label htmlFor={data.label}>{data.label}</label>
+                    </div>
+                  );
+                }
+
+                if (data.type === "option") {
+                  return (
+                    <div key={i}>
+                      <p className="mb-4">{data.label}</p>
+                      <Field
+                        disabled={
+                          !(
+                            userload.editable &&
+                            userload.user.status === "PENDING"
+                          )
+                        }
+                        className="p-2 bg-gray-100 w-full outline-none"
+                        name={data.name}
+                        as="select"
+                      >
+                        {data.options.map((option, i) => (
+                          <option value={option} key={i}>
+                            {option}
+                          </option>
+                        ))}
+                      </Field>
+                    </div>
+                  );
+                }
+              })}
+              {userload.editable && userload.user.status === "PENDING" ? (
+                <button
+                  className="text-white bg-primary-500 px-4 p-2 w-full rounded-lg"
+                  type="submit"
+                >
+                  บันทึกข้อมูล
+                </button>
+              ) : null}
+            </Form>
+          )}
+        </Formik>
+      </div>
+    </React.Fragment>
   );
 }
 
