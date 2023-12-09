@@ -19,11 +19,16 @@ function Profile() {
     <React.Fragment>
       <AppBar />
       <div className="container mx-auto max-w-xl">
-        <div className="flex flex-col items-center space-y-5 pt-24 p-4">
+        <div className="flex flex-col items-center space-y-5 md:mt-24 pt-24 h-fit min-h-screen md:min-h-fit max-h-fit p-4 bg-white rounded-xl shadow-lg">
           <img
             src={userload.infomation.photos[0].value}
             className="w-24 h-24 object-cover rounded-full shadow-md"
           />
+
+          <p>{userload.user.firstName} {userload.user.lastName}</p>
+          <p className="text-[12px]">{"(" + userload.user.email + ")"}</p>
+
+          <div className="w-full h-[1px] bg-primary-50" />
 
           {userload.user.status === "QUALIFIED" ? (
             <Qualified user={userload.user} />
@@ -32,7 +37,7 @@ function Profile() {
           ) : userload.user.status === "NOT_QUALIFIED" ? (
             <NotQualified />
           ) : (
-            <Pending />
+            <Pending meta={userload} />
           )}
 
           {userload.editable && userload.user.status === "PENDING" ? (

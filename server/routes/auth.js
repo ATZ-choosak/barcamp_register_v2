@@ -26,7 +26,8 @@ router.get("/login/success", (req, res) => {
                     message: "successfull",
                     infomation: req.user,
                     user: currentUser,
-                    editable
+                    editable,
+                    console_lst
                     //   cookies: req.cookies
                 });
             } else {
@@ -37,7 +38,8 @@ router.get("/login/success", (req, res) => {
                         message: "successfull",
                         infomation: req.user,
                         user: newUser,
-                        editable
+                        editable,
+                        console_lst
                         //   cookies: req.cookies
                     });
                 })

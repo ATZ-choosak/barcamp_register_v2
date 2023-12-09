@@ -15,9 +15,7 @@ const router = createBrowserRouter([
     loader: async () => {
       let user = await getUser();
       let Console = await getConsole();
-
-      console.log(user)
-
+      
       if (user.infomation) {
         if (user.user.firstName) {
           window.open("/profile", "_self");
@@ -62,5 +60,6 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RouterProvider router={router} />
+    <div className="w-full h-screen bg-secondary-500 fixed left-0 top-0 -z-10" />
   </React.StrictMode>
 );

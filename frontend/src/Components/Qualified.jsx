@@ -31,21 +31,27 @@ function Qualified({ user }) {
         })
       }
     } else {
-      alert("รองรับเฉพาะไฟล์ png jpg และ jpeg เท่านั้น");
+      Swal.fire({
+        title: "แจ้งเตือน",
+        text: "รองรับเฉพาะไฟล์ png jpg และ jpeg เท่านั้น",
+        icon: "error",
+        confirmButtonText: "รับทราบ",
+        confirmButtonColor: "#FF8C00"
+      })
       fileRef.current.value = null;
     }
   };
 
   return (
     <div>
-      <div className="p-10 w-full text-center bg-white rounded-xl shadow-md text-primary-500">
-        <p>ได้รับการตรวจสอบเรียบร้อยแล้ว กรุณาโอนเงินเพื่อยืนยันการสมัคร</p>
+      <div className="p-4 w-full text-center bg-white rounded-xl text-primary-500">
+        <p>ได้รับการตรวจสอบเรียบร้อยแล้ว กรุณาโอนเงิน และอัพโหลดหลักฐานการโอนเงิน เพื่อยืนยันการสมัคร</p>
       </div>
-      <div className="w-full h-96 mt-10 shadow-md rounded-xl">
+      <div className="w-full h-64 mt-10 shadow-md rounded-xl">
         <img className="w-full h-full object-contain" src="https://www.paocloud.co.th/wp-content/uploads/2021/01/Screen-Shot-2564-01-26-at-18.56.53.png" />
       </div>
       {slip_file ? (
-        <div className="w-full h-96 overflow-hidden mt-10 shadow-md rounded-xl">
+        <div className="w-full h-64 overflow-hidden mt-10 shadow-md rounded-xl">
           <img className="object-contain w-full h-full"  src={slip_file} />
         </div>
       ) : null}
@@ -61,7 +67,7 @@ function Qualified({ user }) {
       />
       <button
         onClick={() => fileRef.current.click()}
-        className="text-white bg-primary-500 p-2 rounded-lg w-full mt-10 mb-10 outline-none"
+        className="text-white bg-primary-500 p-2 rounded-lg w-full mt-10 mb-5 outline-none"
       >
         อัพโหลดสลิป
       </button>

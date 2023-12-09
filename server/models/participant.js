@@ -57,6 +57,22 @@ const ParticipantSchema = new Schema({
     type: String,
     default: "",
   },
+  section: {
+    type: String,
+    default: "1 ชั่วโมง",
+  },
+  frequent: {
+    type: String,
+    default: "ครั้งแรก",
+  },
+  rating: {
+    type: String,
+    default: "มากที่สุด",
+  },
+  topics_of_interest: {
+    type: String,
+    default: "",
+  }
 });
 
 //NOT_QUALIFIED(-1), PENDING(0), QUALIFIED(1), CONFIRMED(2)
