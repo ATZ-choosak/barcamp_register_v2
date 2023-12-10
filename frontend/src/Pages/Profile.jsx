@@ -6,14 +6,13 @@ import Confirmed from "../Components/Confirmed";
 import NotQualified from "../Components/NotQualified";
 import Pending from "../Components/Pending";
 import AppBar from "../Components/AppBar";
-import { countDown } from "../CountDown/countDown";
 
 function Profile() {
   const { user, Console } = useLoaderData();
   const navigate = useNavigate();
 
   useEffect(() => {
-    
+
     if (!user.infomation) {
       navigate("/");
     }

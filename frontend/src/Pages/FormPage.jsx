@@ -17,9 +17,9 @@ const Schema = [
     nickName: Yup.string().required("กรุณากรอกชื่อเล่น"),
     phoneNumber: Yup.string()
       .min(10)
-      .required("กรุณากรอกเบอร์โทรให้ครบ 10 ตัว")
+      .required("กรุณากรอกหมายเลขโทรศัพท์ให้ครบ 10 ตัว")
       .max(10)
-      .required("กรุณากรอกเบอร์โทรไม่เกิน 10 ตัว"),
+      .required("กรุณากรอกหมายเลขโทรศัพท์ไม่เกิน 10 ตัว"),
     address: Yup.string().required("กรุณากรอกที่อยู่"),
     organization: Yup.string().required("กรุณากรอกชื่อองค์กร หรือ หน่วยงาน"),
     size: Yup.string().required("กรุณาเลือกไซต์เสื้อ"),
@@ -45,6 +45,21 @@ function FormPage() {
   const [pdpa, setPdpa] = useState(user.user.pdpa || !user.editable);
   const [pdpaPopUp, setPdpaPopUp] = useState(true);
   const navigate = useNavigate();
+
+
+  const validatePhoneNumber = (value) => {
+    let errorMessage;
+    const phoneRegex = /^[0-9]{10}$/; // Assuming a basic 10-digit phone number
+  
+    if (!value) {
+      errorMessage = 'กรุณากรอกหมายเลขโทรศัพท์';
+    } else if (!phoneRegex.test(value)) {
+      errorMessage = 'หมายเลขโทรศัพท์ไม่ถูกต้อง กรุณากรอกหมายเลขโทรศัพท์ 10 หลัก';
+    }
+  
+    return errorMessage;
+  };
+  
 
   useEffect(() => {
     let timeout = countDown(Console.end_register);
@@ -107,6 +122,7 @@ function FormPage() {
       name: "phoneNumber",
       label: "เบอร์โทร",
       type: "input",
+      phone: true,
     },
     {
       name: "address",
@@ -313,6 +329,7 @@ function FormPage() {
                     <div key={i}>
                       <p className="mb-4">{data.label}</p>
                       <Field
+                        validate={data.phone ? validatePhoneNumber : null}
                         disabled={
                           !(user.editable && user.user.status === "PENDING")
                         }

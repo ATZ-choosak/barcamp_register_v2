@@ -10,46 +10,59 @@ import Profile from "./Pages/Profile.jsx";
 import AdminPage from "./Pages/AdminPage.jsx";
 import AdminConsole from "./Pages/admin/AdminConsole.jsx";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    loader: async () => {
-      let user = await getUser();
-      let Console = await getConsole();
+const check_session = (user) => {
+  if (user.message === "No session.") {
+    window.location.href = "/register";
+  }
+};
 
-      return {user , Console};
-    },
-  },
-  {
-    path: "/form",
-    element: <FormPage />,
-    loader: async () => {
-      let user = await getUser();
-      let Console = await getConsole();
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <App />,
+      loader: async () => {
+        let user = await getUser();
+        let Console = await getConsole();
 
-      return {user , Console};
+        return { user, Console };
+      },
     },
-  },
-  {
-    path: "/profile",
-    element: <Profile />,
-    loader: async () => {
-      let user = await getUser();
-      let Console = await getConsole();
+    {
+      path: "/form",
+      element: <FormPage />,
+      loader: async () => {
+        let user = await getUser();
+        let Console = await getConsole();
 
-      return {user , Console};
+        check_session(user);
+
+        return { user, Console };
+      },
     },
-  },
-  {
-    path: "/admin",
-    element: <AdminPage />,
-  },
-  {
-    path: "/ControlPanel",
-    element: <AdminConsole />,
-  },
-] , {basename : "/register"});
+    {
+      path: "/profile",
+      element: <Profile />,
+      loader: async () => {
+        let user = await getUser();
+        let Console = await getConsole();
+
+        check_session(user);
+
+        return { user, Console };
+      },
+    },
+    {
+      path: "/admin",
+      element: <AdminPage />,
+    },
+    {
+      path: "/ControlPanel",
+      element: <AdminConsole />,
+    },
+  ],
+  { basename: "/register" }
+);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
