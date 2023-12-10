@@ -4,11 +4,36 @@ import { useLoaderData } from "react-router-dom";
 import { countDown } from "./CountDown/countDown";
 import { motion, AnimatePresence } from "framer-motion";
 import ImageSlide from "./Components/ImageSlide";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function App() {
-  const Console = useLoaderData();
+  const { user, Console } = useLoaderData();
   const [countDownText, setCountDownText] = useState("Loading...");
   const [showButtonLogin, setShowButtonLogin] = useState(true);
+  const [showTimeOutRegister, setShowTimeOutRegister] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let timeout = countDown(Console.end_register);
+    if (user.infomation) {
+      if (user.user.firstName) {
+        navigate("/profile");
+      } else {
+        if (timeout.distance > 0) {
+          navigate("/form");
+        } else {
+          Swal.fire({
+            title: "แจ้งเตือน",
+            text: "ไม่อยู่ในช่วงเวลาลงทะเบียนแล้ว",
+            icon: "error",
+            confirmButtonText: "รับทราบ",
+            confirmButtonColor: "#FF8C00",
+          });
+        }
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -40,9 +65,7 @@ function App() {
           <p className="sm:text-7xl text-5xl font-bold bg-gradient-to-b from-primary-500 to-red-500 bg-clip-text text-transparent">
             BARCAMP 8
           </p>
-          <p className="mb-5 text-primary-400 font-bold text-2xl">
-            สงขลา
-          </p>
+          <p className="mb-5 text-primary-400 font-bold text-2xl">สงขลา</p>
           {/* Button */}
           <div className="mt-10">
             {showButtonLogin ? (
@@ -87,13 +110,17 @@ function App() {
                 </p>
               </motion.div>
             )}
+            <div>
+              <button className="text-white text-center w-full mt-5 underline" onClick={() => window.location.href = "/"}>กลับไปยังหน้าหลัก</button>
+            </div>
           </div>
         </motion.div>
       </div>
-      <motion.div className="w-full pointer-events-none fixed -bottom-44 left-0 z-[1]"
-        initial={{ translateY : 100 , opacity : 0 }}
-        animate={{ translateY : 0 , opacity : 1 }}
-        transition={{ duration : 0.5 }}
+      <motion.div
+        className="w-full pointer-events-none fixed -bottom-44 left-0 z-[1]"
+        initial={{ translateY: 100, opacity: 0 }}
+        animate={{ translateY: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
       >
         <img className="w-full" src="timeline.png" />
       </motion.div>

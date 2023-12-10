@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Qualified from "../Components/Qualified";
@@ -6,10 +6,22 @@ import Confirmed from "../Components/Confirmed";
 import NotQualified from "../Components/NotQualified";
 import Pending from "../Components/Pending";
 import AppBar from "../Components/AppBar";
+import { countDown } from "../CountDown/countDown";
 
 function Profile() {
-  const userload = useLoaderData();
+  const { user, Console } = useLoaderData();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    
+    if (!user.infomation) {
+      navigate("/");
+    }
+
+    if (!user.user.firstName) {
+      navigate("/form");
+    }
+  }, []);
 
   const backToForm = () => {
     navigate("/form");
@@ -21,26 +33,28 @@ function Profile() {
       <div className="container mx-auto max-w-xl">
         <div className="flex flex-col items-center space-y-5 md:mt-24 pt-24 h-fit min-h-screen md:min-h-fit max-h-fit p-4 bg-white rounded-xl shadow-lg">
           <img
-            src={userload.infomation.photos[0].value}
+            src={user.infomation.photos[0].value}
             className="w-24 h-24 object-cover rounded-full shadow-md"
           />
 
-          <p>{userload.user.firstName} {userload.user.lastName}</p>
-          <p className="text-[12px]">{"(" + userload.user.email + ")"}</p>
+          <p>
+            {user.user.firstName} {user.user.lastName}
+          </p>
+          <p className="text-[12px]">{"(" + user.user.email + ")"}</p>
 
           <div className="w-full h-[1px] bg-primary-50" />
 
-          {userload.user.status === "QUALIFIED" ? (
-            <Qualified user={userload.user} />
-          ) : userload.user.status === "CONFIRMED" ? (
-            <Confirmed user={userload.user} />
-          ) : userload.user.status === "NOT_QUALIFIED" ? (
+          {user.user.status === "QUALIFIED" ? (
+            <Qualified user={user.user} />
+          ) : user.user.status === "CONFIRMED" ? (
+            <Confirmed user={user.user} />
+          ) : user.user.status === "NOT_QUALIFIED" ? (
             <NotQualified />
           ) : (
-            <Pending meta={userload} />
+            <Pending meta={user} />
           )}
 
-          {userload.editable && userload.user.status === "PENDING" ? (
+          {user.editable && user.user.status === "PENDING" ? (
             <button
               onClick={backToForm}
               className="text-white bg-primary-500 p-2 rounded-lg w-full"

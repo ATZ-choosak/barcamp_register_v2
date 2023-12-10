@@ -12,6 +12,7 @@ const parser = require("body-parser");
 const authRoute = require("./routes/auth");
 const participantRoute = require("./routes/participantRoute");
 const getConsoleRoute = require("./routes/getConsole");
+const adminRoute = require("./routes/adminRoute")
 
 mongoose
   .connect(`${process.env.DATABASE_URL}/${process.env.DATABASE_NAME}`)
@@ -39,6 +40,7 @@ app.use(
 );
 
 app.use("/auth", authRoute);
+app.use("/auth", adminRoute);
 app.use("/api", participantRoute);
 app.use("/api", getConsoleRoute);
 

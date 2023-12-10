@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { saveForm } from "../AuthFunctions/authFunctions";
 import { Formik, Form, Field } from "formik";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import AppBar from "../Components/AppBar";
 import Swal from "sweetalert2";
 import clsx from "clsx";
+import { countDown } from "../CountDown/countDown";
 
 const Schema = [
   Yup.object().shape({
@@ -40,14 +41,21 @@ const Schema = [
 ];
 
 function FormPage() {
-  const userload = useLoaderData();
-  const [pdpa, setPdpa] = useState(userload.user.pdpa || !userload.editable);
+  const { user, Console } = useLoaderData();
+  const [pdpa, setPdpa] = useState(user.user.pdpa || !user.editable);
   const [pdpaPopUp, setPdpaPopUp] = useState(true);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    let timeout = countDown(Console.end_register);
+    if (!user.infomation || timeout.distance < 0) {
+      navigate("/");
+    }
+  }, []);
+
   const pdpaConfirm = async () => {
     let pdpa_data = {
-      email: userload.infomation.emails[0].value,
+      email: user.infomation.emails[0].value,
       pdpa: true,
     };
     let res = await saveForm(pdpa_data);
@@ -62,20 +70,20 @@ function FormPage() {
   };
 
   const [initValue, setInitValue] = useState({
-    firstName: userload.user.firstName,
-    lastName: userload.user.lastName,
-    nickName: userload.user.nickName,
-    phoneNumber: userload.user.phoneNumber,
-    address: userload.user.address,
-    size: userload.user.size,
-    organization: userload.user.organization,
-    speakingTopic: userload.user.speakingTopic,
-    isHalal: userload.user.isHalal,
-    allergic: userload.user.allergic,
-    section: userload.user.section,
-    frequent: userload.user.frequent,
-    rating: userload.user.rating,
-    topics_of_interest: userload.user.topics_of_interest,
+    firstName: user.user.firstName,
+    lastName: user.user.lastName,
+    nickName: user.user.nickName,
+    phoneNumber: user.user.phoneNumber,
+    address: user.user.address,
+    size: user.user.size,
+    organization: user.user.organization,
+    speakingTopic: user.user.speakingTopic,
+    isHalal: user.user.isHalal,
+    allergic: user.user.allergic,
+    section: user.user.section,
+    frequent: user.user.frequent,
+    rating: user.user.rating,
+    topics_of_interest: user.user.topics_of_interest,
   });
 
   //informations
@@ -189,7 +197,7 @@ function FormPage() {
     }
 
     let new_data = data;
-    new_data["email"] = userload.infomation.emails[0].value;
+    new_data["email"] = user.infomation.emails[0].value;
 
     let res = await saveForm(new_data);
 
@@ -234,8 +242,8 @@ function FormPage() {
                       <Field
                         disabled={
                           !(
-                            userload.editable &&
-                            userload.user.status === "PENDING"
+                            user.editable &&
+                            user.user.status === "PENDING"
                           )
                         }
                         className="p-2 bg-gray-100 w-full rounded-lg outline-none"
@@ -258,8 +266,8 @@ function FormPage() {
                         id={data.label}
                         disabled={
                           !(
-                            userload.editable &&
-                            userload.user.status === "PENDING"
+                            user.editable &&
+                            user.user.status === "PENDING"
                           )
                         }
                         className="p-2 w-4 h-4"
@@ -278,8 +286,8 @@ function FormPage() {
                       <Field
                         disabled={
                           !(
-                            userload.editable &&
-                            userload.user.status === "PENDING"
+                            user.editable &&
+                            user.user.status === "PENDING"
                           )
                         }
                         className="p-2 bg-gray-100 w-full outline-none"
@@ -306,10 +314,7 @@ function FormPage() {
                       <p className="mb-4">{data.label}</p>
                       <Field
                         disabled={
-                          !(
-                            userload.editable &&
-                            userload.user.status === "PENDING"
-                          )
+                          !(user.editable && user.user.status === "PENDING")
                         }
                         className={clsx(
                           "p-2 bg-gray-100 w-full rounded-lg outline-none",
@@ -335,10 +340,7 @@ function FormPage() {
                       <Field
                         id={data.label}
                         disabled={
-                          !(
-                            userload.editable &&
-                            userload.user.status === "PENDING"
-                          )
+                          !(user.editable && user.user.status === "PENDING")
                         }
                         className="p-2 w-4 h-4 accent-primary-500"
                         name={data.name}
@@ -355,10 +357,7 @@ function FormPage() {
                       <p className="mb-4">{data.label}</p>
                       <Field
                         disabled={
-                          !(
-                            userload.editable &&
-                            userload.user.status === "PENDING"
-                          )
+                          !(user.editable && user.user.status === "PENDING")
                         }
                         className="p-2 bg-gray-100 w-full outline-none rounded-lg"
                         name={data.name}
@@ -417,8 +416,8 @@ function FormPage() {
                 </button>
               </div>
 
-              {userload.editable &&
-              userload.user.status === "PENDING" &&
+              {user.editable &&
+              user.user.status === "PENDING" &&
               currentSection === formList.length - 1 ? (
                 <button
                   className="text-white bg-primary-500 px-4 p-4 w-full rounded-lg font-bold"

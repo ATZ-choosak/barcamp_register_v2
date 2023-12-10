@@ -7,6 +7,8 @@ import FormPage from "./Pages/FormPage.jsx";
 import getUser from "./loader/getUser.js";
 import getConsole from "./loader/getConsole.js";
 import Profile from "./Pages/Profile.jsx";
+import AdminPage from "./Pages/AdminPage.jsx";
+import AdminConsole from "./Pages/admin/AdminConsole.jsx";
 
 const router = createBrowserRouter([
   {
@@ -15,16 +17,8 @@ const router = createBrowserRouter([
     loader: async () => {
       let user = await getUser();
       let Console = await getConsole();
-      
-      if (user.infomation) {
-        if (user.user.firstName) {
-          window.open("/profile", "_self");
-        } else {
-          window.open("/form", "_self");
-        }
-      }
 
-      return Console;
+      return {user , Console};
     },
   },
   {
@@ -32,11 +26,9 @@ const router = createBrowserRouter([
     element: <FormPage />,
     loader: async () => {
       let user = await getUser();
-      if (!user.infomation) {
-        window.open("/", "_self");
-      }
+      let Console = await getConsole();
 
-      return user;
+      return {user , Console};
     },
   },
   {
@@ -44,18 +36,20 @@ const router = createBrowserRouter([
     element: <Profile />,
     loader: async () => {
       let user = await getUser();
-      if (!user.infomation) {
-        window.open("/", "_self");
-      }
+      let Console = await getConsole();
 
-      if (!user.user.firstName) {
-        window.open("/form", "_self");
-      }
-
-      return user;
+      return {user , Console};
     },
   },
-]);
+  {
+    path: "/admin",
+    element: <AdminPage />,
+  },
+  {
+    path: "/ControlPanel",
+    element: <AdminConsole />,
+  },
+] , {basename : "/register"});
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
