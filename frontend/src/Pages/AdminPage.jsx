@@ -34,8 +34,8 @@ function AdminPage() {
   }, []);
 
   return (
-    <div className=" max-w-xl mx-auto">
-      <div className="mt-80 space-y-10">
+    <div className="container p-4 max-w-xl h-screen mx-auto flex items-center justify-center">
+      <div className="space-y-10 w-full">
         <p className="font-bold text-2xl text-center">Admin Login</p>
         <form
           onSubmit={submitFrom}
