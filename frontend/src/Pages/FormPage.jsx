@@ -138,7 +138,7 @@ function FormPage() {
       name: "size",
       label: "ไซต์เสื้อ",
       type: "option",
-      options: ["S", "L", "XL"],
+      options: ["S", "M" , "L", "XL" , "2XL" , "3XL"],
     },
   ]);
 
