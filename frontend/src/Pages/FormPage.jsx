@@ -46,20 +46,19 @@ function FormPage() {
   const [pdpaPopUp, setPdpaPopUp] = useState(true);
   const navigate = useNavigate();
 
-
   const validatePhoneNumber = (value) => {
     let errorMessage;
     const phoneRegex = /^[0-9]{10}$/; // Assuming a basic 10-digit phone number
-  
+
     if (!value) {
-      errorMessage = 'กรุณากรอกหมายเลขโทรศัพท์';
+      errorMessage = "กรุณากรอกหมายเลขโทรศัพท์";
     } else if (!phoneRegex.test(value)) {
-      errorMessage = 'หมายเลขโทรศัพท์ไม่ถูกต้อง กรุณากรอกหมายเลขโทรศัพท์ 10 หลัก';
+      errorMessage =
+        "หมายเลขโทรศัพท์ไม่ถูกต้อง กรุณากรอกหมายเลขโทรศัพท์ 10 หลัก";
     }
-  
+
     return errorMessage;
   };
-  
 
   useEffect(() => {
     let timeout = countDown(Console.end_register);
@@ -138,7 +137,7 @@ function FormPage() {
       name: "size",
       label: "ไซต์เสื้อ",
       type: "option",
-      options: ["S", "M" , "L", "XL" , "2XL" , "3XL"],
+      options: ["S", "M", "L", "XL", "2XL", "3XL"],
     },
   ]);
 
@@ -161,6 +160,7 @@ function FormPage() {
       type: "option",
       options: [
         "ครั้งแรก",
+        "1 ครั้ง",
         "2 ครั้ง",
         "3 ครั้ง",
         "4 ครั้ง",
@@ -372,6 +372,10 @@ function FormPage() {
                   return (
                     <div key={i}>
                       <p className="mb-4">{data.label}</p>
+                      {data.name === "size" ? 
+                      <div className="w-full h-96 p-4">
+                        <img className="w-full h-full object-contain" src="size.png" />
+                      </div> : null}
                       <Field
                         disabled={
                           !(user.editable && user.user.status === "PENDING")
