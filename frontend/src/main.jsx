@@ -61,8 +61,7 @@ const router = createBrowserRouter(
       element: <AdminConsole />,
     },
   ],
-  { //basename: "/register" 
-}
+  { basename: "/register" }
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
