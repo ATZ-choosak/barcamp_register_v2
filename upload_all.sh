@@ -16,7 +16,7 @@ scp -r conf.d/register.conf ${USER}@${TARGET}:${CONFIG_PATH}/
 ssh ${USER}@${TARGET} "rm -rf /var/www/public_relations/assets/*"
 ssh ${USER}@${TARGET} "cp -r /var/www/register/assets /var/www/public_relations"
 
-# cd ..
+# # cd ..
 # mkdir server_init
 # cp -r server/* server_init/
 # cd server_init

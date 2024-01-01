@@ -25,7 +25,7 @@ function App() {
         } else {
           Swal.fire({
             title: "แจ้งเตือน",
-            text: "ไม่อยู่ในช่วงเวลาลงทะเบียนแล้ว",
+            text: "ไม่มีรายชื่อในฐานข้อมูล",
             icon: "error",
             confirmButtonText: "รับทราบ",
             confirmButtonColor: "#FF8C00",
@@ -59,9 +59,11 @@ function App() {
           animate={{ translateY: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <p className="mb-5 text-primary-400 font-bold text-xl">
-            ลงทะเบียนเข้าร่วมงาน
-          </p>
+          {countDown(Console.end_register).distance > 0 ? (
+            <p className="mb-5 text-primary-400 font-bold text-xl">
+              ลงทะเบียนเข้าร่วมงาน
+            </p>
+          ) : null}
           <p className="sm:text-7xl text-5xl font-bold bg-gradient-to-b from-primary-500 to-red-500 bg-clip-text text-transparent">
             BARCAMP 8
           </p>
@@ -100,7 +102,12 @@ function App() {
                       d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571	c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
                     ></path>
                   </svg>
-                  <p className="font-bold">ลงทะเบียนด้วย Google</p>
+                  <p className="font-bold">
+                    {countDown(Console.end_register).distance < 0
+                      ? "เข้าสู่ระบบด้วย "
+                      : "ลงทะเบียนด้วย "}{" "}
+                    Google
+                  </p>
                 </button>
               </motion.div>
             ) : (
@@ -111,7 +118,12 @@ function App() {
               </motion.div>
             )}
             <div>
-              <button className="text-white text-center w-full mt-5 underline" onClick={() => window.location.href = "/"}>กลับไปยังหน้าหลัก</button>
+              <button
+                className="text-white text-center w-full mt-5 underline"
+                onClick={() => (window.location.href = "/")}
+              >
+                กลับไปยังหน้าหลัก
+              </button>
             </div>
           </div>
         </motion.div>

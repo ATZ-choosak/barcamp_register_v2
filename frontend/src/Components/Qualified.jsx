@@ -47,8 +47,8 @@ function Qualified({ user }) {
       <div className="p-4 w-full text-center bg-white rounded-xl text-primary-500">
         <p>ได้รับการตรวจสอบเรียบร้อยแล้ว กรุณาโอนเงิน และอัพโหลดหลักฐานการโอนเงิน เพื่อยืนยันการสมัคร</p>
       </div>
-      <div className="w-full h-64 mt-10 shadow-md rounded-xl">
-        <img className="w-full h-full object-contain" src="https://www.paocloud.co.th/wp-content/uploads/2021/01/Screen-Shot-2564-01-26-at-18.56.53.png" />
+      <div className="w-full h-80 mt-10 shadow-md rounded-xl">
+        <img className="w-full h-full object-contain" src="QRCODE.jpg" />
       </div>
       {slip_file ? (
         <div className="w-full h-64 overflow-hidden mt-10 shadow-md rounded-xl">
