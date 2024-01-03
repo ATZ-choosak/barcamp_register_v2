@@ -10,6 +10,7 @@ function Qualified({ user }) {
   const fileRef = useRef(null);
 
   const inputFile = async (file) => {
+
     if (
       file.type === "image/png" ||
       file.type === "image/jpg" ||
@@ -19,25 +20,25 @@ function Qualified({ user }) {
       formData.append("id", user._id);
       formData.append("slip", file);
 
-      let res = await uploadSlip(formData);
-      if (!res.error) {
-        setSlipFile(URL.createObjectURL(file));
-        Swal.fire({
-          title: "แจ้งเตือน",
-          text: " อัพโหลดสลิปสำเร็จ",
-          icon: "success",
-          confirmButtonText: "รับทราบ",
-          confirmButtonColor: "#FF8C00"
-        })
-      }
+      uploadSlip(formData).then((res) => {
+        if (!res.error || res.message === "Not Time To Edit information.") {
+          Swal.fire({
+            title: "แจ้งเตือน",
+            text: " อัพโหลดสลิปสำเร็จ",
+            icon: "success",
+            confirmButtonText: "รับทราบ",
+            confirmButtonColor: "#FF8C00",
+          }).then(() => setSlipFile(URL.createObjectURL(file)))
+        }
+      });
     } else {
       Swal.fire({
         title: "แจ้งเตือน",
         text: "รองรับเฉพาะไฟล์ png jpg และ jpeg เท่านั้น",
         icon: "error",
         confirmButtonText: "รับทราบ",
-        confirmButtonColor: "#FF8C00"
-      })
+        confirmButtonColor: "#FF8C00",
+      });
       fileRef.current.value = null;
     }
   };
@@ -45,14 +46,18 @@ function Qualified({ user }) {
   return (
     <div>
       <div className="p-4 w-full text-center bg-white rounded-xl text-primary-500">
-        <p>ได้รับการตรวจสอบเรียบร้อยแล้ว กรุณาโอนเงิน และอัพโหลดหลักฐานการโอนเงิน เพื่อยืนยันการสมัคร</p>
+        <p>
+          ได้รับการตรวจสอบเรียบร้อยแล้ว กรุณาโอนเงินมัดจำ และอัพโหลดหลักฐานการโอนเงิน
+          เพื่อยืนยันการสมัคร 
+        </p>
+        <p className="mt-5 text-red-500 text-center text-[12px] mb-5">**เงินส่วนนี้จะได้รับคืนวันวันงาน**</p>
       </div>
       <div className="w-full h-80 mt-10 shadow-md rounded-xl">
         <img className="w-full h-full object-contain" src="QRCODE.jpg" />
       </div>
       {slip_file ? (
         <div className="w-full h-64 overflow-hidden mt-10 shadow-md rounded-xl">
-          <img className="object-contain w-full h-full"  src={slip_file} />
+          <img className="object-contain w-full h-full" src={slip_file} />
         </div>
       ) : null}
       <input

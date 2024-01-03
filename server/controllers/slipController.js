@@ -12,41 +12,34 @@ module.exports = (req, res) => {
       if (update_user) {
         let editable = await getEditable();
 
-        //eidtable
-        if (editable) {
-          //confirm pdpa
-          if (update_user.pdpa) {
-            update_user.slip = slip.path;
-            update_user.save();
+        //confirm pdpa
+        if (update_user.pdpa) {
+          update_user.slip = slip.path;
+          update_user.save();
+
+          res.status(200).send({
+            error: false,
+            slip: slip.path,
+            message: "Slip uploaded successfully.",
+          });
+          //not confirm pdpa
+        } else {
+          if (req.body.pdpa) {
+            await update_user.updateOne(req.body);
 
             res.status(200).send({
               error: false,
-              slip: slip.path,
-              message: "Slip uploaded successfully.",
+              message: "Update PDPA Complete.",
             });
-            //not confirm pdpa
           } else {
-            if (req.body.pdpa) {
-              await update_user.updateOne(req.body);
-
-              res.status(200).send({
-                error: false,
-                message: "Update PDPA Complete.",
-              });
-            } else {
-              res.status(200).send({
-                error: true,
-                message: "PDPA not confirm.",
-              });
-            }
+            res.status(200).send({
+              error: true,
+              message: "PDPA not confirm.",
+            });
           }
-          //not editable
-        } else {
-          res.status(200).send({
-            error: true,
-            message: "Not Time To Edit information.",
-          });
         }
+
+
         //new user
       } else {
         res.status(200).send({

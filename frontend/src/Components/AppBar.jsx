@@ -16,7 +16,7 @@ function AppBar() {
       </div>
       <div className="relative">
         <button
-          onFocus={() => setOpenMenu(true)}
+          onClick={() => setOpenMenu(true)}
           onBlur={() =>
             setTimeout(() => {
               setOpenMenu(false);
