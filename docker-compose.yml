@@ -36,6 +36,23 @@ services:
     restart: always
     networks:
       - barcamp8
+  api2:
+    container_name: api2_container
+    build:
+      context: ./server_checkin
+      dockerfile: ./Dockerfile
+    ports:
+      - 127.0.0.1:8081:8081
+    environment:
+      - DATABASE_URL=mongodb+srv://admin:admin1234@cluster0.8b5ccb1.mongodb.net/Topics
+      - ORIGIN_URL=/
+      - PORT=8081
+      - PRODUCTION=true
+    depends_on:
+      - mongo_db
+    restart: always
+    networks:
+      - barcamp8
 
 volumes:
   mongo_db:
